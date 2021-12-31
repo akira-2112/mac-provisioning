@@ -1,0 +1,51 @@
+---
+
+- hosts: all
+
+  tasks:
+    - name: add homebrew setting
+      blockinfile:
+        path: '~/.zshrc'
+        marker: '# {mark} homebrew setting'
+        block: |
+          if [ "$(uname -m)" = "arm64" ] && [ -x /opt/homebrew/bin/brew ]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+          elif [ "$(uname -m)" = "x86_64" ] && [ -x /usr/local/bin/brew ]; then
+            eval "$(/usr/local/bin/brew shellenv)"
+          fi
+
+    - name: install cask packages
+      homebrew_cask:
+        name: "{{ item }}"
+        path: /opt/homebrew/bin
+      loop:
+        - 1password
+        - google-chrome
+        - slack
+        - zoom
+        - discord
+        - miro
+        - visual-studio-code
+        - github
+        - docker
+        - font-noto-sans-cjk
+
+    - name: install brew packages
+      homebrew:
+        name: "{{ item }}"
+        path: /opt/homebrew/bin
+      loop:
+        - gh
+        - saml2aws
+
+    - name: install python tools
+      command: pipx install {{ item.name }}
+      args:
+        creates: '~/.local/bin/{{ item.command }}'
+      loop:
+        - name: awscli
+          command: aws
+        - name: pip-tools
+          command: pip-compile
+        - name: ansible-lint
+          command: ansible-lint
