@@ -1,6 +1,7 @@
 ---
 
-- hosts: all
+- hosts: local
+  gather_facts: no
 
   tasks:
     - name: add homebrew setting
@@ -47,5 +48,3 @@
           command: aws
         - name: pip-tools
           command: pip-compile
-        - name: ansible-lint
-          command: ansible-lint

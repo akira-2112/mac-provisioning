@@ -11,7 +11,7 @@ all:
 
 .PHONY: install
 install: ensure_ansible ensure_ansible_lint ensure_homebrew
-	$(ANSIBLE_PLAYBOOK) playbooks/base.yml
+	$(ANSIBLE_PLAYBOOK) setup.yml
 
 .PHONY: ensure_ansible
 ensure_ansible: $(ANSIBLE_PLAYBOOK)
