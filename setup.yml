@@ -1,7 +1,6 @@
 ---
 
 - hosts: local
-  gather_facts: no
 
   tasks:
     - name: add homebrew setting
@@ -9,16 +8,14 @@
         path: '~/.zshrc'
         marker: '# {mark} homebrew setting'
         block: |
-          if [ "$(uname -m)" = "arm64" ] && [ -x /opt/homebrew/bin/brew ]; then
+          if [ -d /opt/homebrew/bin ]; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
-          elif [ "$(uname -m)" = "x86_64" ] && [ -x /usr/local/bin/brew ]; then
-            eval "$(/usr/local/bin/brew shellenv)"
+            alias brew="PATH=/opt/homebrew/bin brew"
           fi
 
     - name: install cask packages
       homebrew_cask:
         name: "{{ item }}"
-        path: /opt/homebrew/bin
       loop:
         - 1password
         - google-chrome
@@ -31,13 +28,13 @@
         - docker
         - font-noto-sans-cjk
 
-    - name: install brew packages
+    - name: install formula packages
       homebrew:
         name: "{{ item }}"
-        path: /opt/homebrew/bin
       loop:
         - gh
         - saml2aws
+        - git-secrets
 
     - name: install python tools
       command: pipx install {{ item.name }}

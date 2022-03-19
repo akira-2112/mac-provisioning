@@ -1,23 +1,24 @@
+# -*- mode: makefile; coding: utf-8-unix -*-
 
+##############################################################################
+#  Variables
+##############################################################################
 PIPX := $(HOME)/.local/bin/pipx
 ANSIBLE_PLAYBOOK := $(HOME)/.local/bin/ansible-playbook
 ANSIBLE_LINT := $(HOME)/.local/bin/ansible-lint
 
-HOMEBREW_X64 := /usr/local/bin/brew
-HOMEBREW_ARM := /opt/homebrew/bin/brew
+HOMEBREW := /opt/homebrew/bin/brew
 
+
+##############################################################################
+#  Rules
+##############################################################################
 .PHONY: all
-all:
+all: install
 
 .PHONY: install
-install: ensure_ansible ensure_ansible_lint ensure_homebrew
+install: $(ANSIBLE_PLAYBOOK) $(ANSIBLE_LINT) $(HOMEBREW)
 	$(ANSIBLE_PLAYBOOK) setup.yml
-
-.PHONY: ensure_ansible
-ensure_ansible: $(ANSIBLE_PLAYBOOK)
-
-.PHONY: ensure_ansible_lint
-ensure_ansible_lint: $(ANSIBLE_LINT)
 
 $(ANSIBLE_PLAYBOOK): $(PIPX)
 	$(PIPX) install ansible-base
@@ -32,11 +33,5 @@ $(PIPX):
 	python3 -m pipx install pipx
 	$(PIPX) ensurepath
 
-.PHONY: ensure_homebrew
-ensure_homebrew: $(HOMEBREW_X64) $(HOMEBREW_ARM)
-
-$(HOMEBREW_X64):
-	arch -x86_64 /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-$(HOMEBREW_ARM):
-	arch -arm64 /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+$(HOMEBREW):
+	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
