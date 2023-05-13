@@ -1,0 +1,20 @@
+---
+- name: Check if homebrew setting is correct
+  ansible.builtin.shell: |
+    type brew
+  register: result
+  changed_when: false
+  failed_when: false
+
+- name: Add path setting
+  ansible.builtin.blockinfile:
+    path: ~/.zshrc
+    insertbefore: BOF
+    marker: "# {mark} homebrew setting"
+    block: |
+      if test -x {{ brew_exec_path }}/brew; then
+        fpath+=({{ zsh_completion_script_path }})
+        eval "$({{ brew_exec_path }}/brew shellenv)"
+        alias brew="PATH={{ brew_exec_path }} brew"
+      fi
+  when: result.rc != 0

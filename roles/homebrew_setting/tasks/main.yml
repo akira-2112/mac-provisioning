@@ -1,0 +1,6 @@
+---
+
+- block:
+  - import_tasks: setting.yml
+
+  tags: homebrew_setting
