@@ -2,46 +2,21 @@
 
 - hosts: local
 
-  tasks:
-    - name: add homebrew setting
-      blockinfile:
-        path: '~/.zshrc'
-        marker: '# {mark} homebrew setting'
-        block: |
-          if [ -d /opt/homebrew/bin ]; then
-            eval "$(/opt/homebrew/bin/brew shellenv)"
-            alias brew="PATH=/opt/homebrew/bin brew"
-          fi
+  roles:
+    - homebrew_setting
 
-    - name: install cask packages
-      homebrew_cask:
-        name: "{{ item }}"
-      loop:
-        - 1password
-        - google-chrome
-        - slack
-        - zoom
-        - discord
-        - miro
-        - visual-studio-code
-        - github
-        - docker
-        - font-noto-sans-cjk
-
-    - name: install formula packages
-      homebrew:
-        name: "{{ item }}"
-      loop:
-        - gh
-        - saml2aws
-        - git-secrets
-
-    - name: install python tools
-      command: pipx install {{ item.name }}
-      args:
-        creates: '~/.local/bin/{{ item.command }}'
-      loop:
-        - name: awscli
-          command: aws
-        - name: pip-tools
-          command: pip-compile
+  # tasks:
+  #   - name: install cask packages
+  #     homebrew_cask:
+  #       name: "{{ item }}"
+  #     loop:
+  #       - 1password
+  #       - google-chrome
+  #       - slack
+  #       - zoom
+  #       - discord
+  #       - miro
+  #       - visual-studio-code
+  #       - github
+  #       - docker
+  #       - font-noto-sans-cjk
