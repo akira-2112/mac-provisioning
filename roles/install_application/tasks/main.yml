@@ -1,10 +1,10 @@
 ---
-- name: "Existence check ==> {{ application_name }}"
+- name: Existence check ==> {{ application_name }}
   ansible.builtin.stat:
-    path: "/Applications/{{ application_name }}"
+    path: /Applications/{{ application_name }}
   register: result
 
-- name: "Install ==> {{ application_name }}"
+- name: Install ==> {{ application_name }}
   community.general.homebrew_cask:
     name: "{{ package_name }}"
     state: present

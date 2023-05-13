@@ -1,5 +1,4 @@
 ---
-
 - name: Check if homebrew setting is correct
   ansible.builtin.shell: |
     type brew

@@ -1,10 +1,10 @@
 ---
-- name: "Existence check ==> {{ font_name }}"
+- name: Existence check ==> {{ font_name }}
   ansible.builtin.stat:
-    path: "~/Library/Fonts/{{ font_name }}"
+    path: ~/Library/Fonts/{{ font_name }}
   register: result
 
-- name: "Install ==> {{ font_name }}"
+- name: Install ==> {{ font_name }}
   community.general.homebrew_cask:
     name: "{{ package_name }}"
     state: present

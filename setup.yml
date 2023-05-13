@@ -1,5 +1,4 @@
 ---
-
 - hosts: local
 
   roles:
