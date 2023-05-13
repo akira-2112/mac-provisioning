@@ -1,37 +1,30 @@
 # -*- mode: makefile; coding: utf-8-unix -*-
 
 ##############################################################################
-#  Variables
+#  Commands
 ##############################################################################
-PIPX := $(HOME)/.local/bin/pipx
-ANSIBLE_PLAYBOOK := $(HOME)/.local/bin/ansible-playbook
-ANSIBLE_LINT := $(HOME)/.local/bin/ansible-lint
-
-HOMEBREW := /opt/homebrew/bin/brew
-
+ANSIBLE_PLAYBOOK := ~/.nix-profile/bin/ansible-playbook
 
 ##############################################################################
 #  Rules
 ##############################################################################
 .PHONY: all
-all: install
-
-.PHONY: install
-install: $(ANSIBLE_PLAYBOOK) $(ANSIBLE_LINT) $(HOMEBREW)
+all: install-ansible install-homebrew
 	$(ANSIBLE_PLAYBOOK) setup.yml
 
-$(ANSIBLE_PLAYBOOK): $(PIPX)
-	$(PIPX) install ansible-base
-	$(PIPX) inject ansible-base ansible
+.PHONY: install-ansible
+install-ansible: install-nix ## Install ansible
+	test -x $(ANSIBLE_PLAYBOOK) || nix profile install nixpkgs#ansible
 
-$(ANSIBLE_LINT): $(PIPX)
-	$(PIPX) install ansible-lint
-	$(PIPX) inject ansible-lint ansible
+.PHONY: install-nix
+install-nix: ## Install nix
+	./install_nix.sh
 
-$(PIPX):
-	python3 -m pip install --user pipx
-	python3 -m pipx install pipx
-	$(PIPX) ensurepath
+.PHONY: install-homebrew
+install-homebrew: ## Install homebrew
+	./install_homebrew.sh
 
-$(HOMEBREW):
-	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+.DEFAULT_GOAL := help
+.PHONY: help
+help: ## Print rules (https://postd.cc/auto-documented-makefile/)
+	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
