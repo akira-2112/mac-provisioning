@@ -5,18 +5,37 @@
   roles:
     - homebrew_setting
 
-  # tasks:
-  #   - name: install cask packages
-  #     homebrew_cask:
-  #       name: "{{ item }}"
-  #     loop:
-  #       - 1password
-  #       - google-chrome
-  #       - slack
-  #       - zoom
-  #       - discord
-  #       - miro
-  #       - visual-studio-code
-  #       - github
-  #       - docker
-  #       - font-noto-sans-cjk
+  tasks:
+    - include_role:
+        name: install_application
+      vars:
+        application_name: "{{ item.application_name }}"
+        package_name: "{{ item.package_name }}"
+      loop:
+        - application_name: 1Password.app
+          package_name: 1password
+        - application_name: Discord.app
+          package_name: discord
+        - application_name: Docker.app
+          package_name: docker
+        - application_name: Google Chrome.app
+          package_name: google-chrome
+        - application_name: Miro.app
+          package_name: miro
+        - application_name: Slack.app
+          package_name: slack
+        - application_name: Visual Studio Code.app
+          package_name: visual-studio-code
+        - application_name: zoom.us.app
+          package_name: zoom
+
+    - include_role:
+        name: install_font
+      vars:
+        font_name: "{{ item.font_name }}"
+        package_name: "{{ item.package_name }}"
+      loop:
+        - font_name: NotoSansCJK.ttc
+          package_name: font-noto-sans-cjk
+        - font_name: FiraCodeNerdFont-Regular.ttf
+          package_name: font-fira-code-nerd-font

@@ -1,0 +1,11 @@
+---
+- name: "Existence check ==> {{ application_name }}"
+  ansible.builtin.stat:
+    path: "/Applications/{{ application_name }}"
+  register: result
+
+- name: "Install ==> {{ application_name }}"
+  community.general.homebrew_cask:
+    name: "{{ package_name }}"
+    state: present
+  when: not result.stat.exists
