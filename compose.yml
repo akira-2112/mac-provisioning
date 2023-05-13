@@ -1,0 +1,37 @@
+---
+version: "3"
+
+services:
+  ansible-lint:
+    image: cytopia/ansible-lint:latest
+    volumes:
+      - source: .
+        target: /data
+        type: bind
+    entrypoint: ansible-lint
+    command: []
+    profiles:
+      - dev
+
+  shellcheck:
+    image: koalaman/shellcheck:latest
+    volumes:
+      - source: .
+        target: /mnt
+        type: bind
+    entrypoint: shellcheck -s bash
+    command: []
+    profiles:
+      - dev
+
+  shfmt:
+    image: mvdan/shfmt:latest
+    volumes:
+      - source: .
+        target: /mnt
+        type: bind
+    working_dir: /mnt
+    entrypoint: shfmt -l -w -i 2
+    command: []
+    profiles:
+      - dev
