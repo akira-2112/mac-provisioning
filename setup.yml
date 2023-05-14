@@ -17,6 +17,8 @@
           package_name: discord
         - application_name: Docker.app
           package_name: docker
+        - application_name: GitHub Desktop.app
+          package_name: github
         - application_name: Google Chrome.app
           package_name: google-chrome
         - application_name: Miro.app
