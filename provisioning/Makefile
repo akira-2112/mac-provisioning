@@ -1,4 +1,4 @@
-# -*- mode: makefile; coding: utf-8-unix -*-
+# -*- mode: makefile-gmake -*-
 
 ##############################################################################
 #  Commands
@@ -44,8 +44,3 @@ lint-shellscript:
 .PHONY: format-shellscript
 format-shellscript:
 	$(SHFMT) *.sh
-
-.DEFAULT_GOAL := help
-.PHONY: help
-help: ## Print rules (https://postd.cc/auto-documented-makefile/)
-	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
