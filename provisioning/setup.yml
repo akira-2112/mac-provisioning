@@ -38,5 +38,3 @@
       loop:
         - font_name: NotoSansCJK.ttc
           package_name: font-noto-sans-cjk
-        - font_name: FiraCodeNerdFont-Regular.ttf
-          package_name: font-fira-code-nerd-font
